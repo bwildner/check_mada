@@ -5,7 +5,7 @@
 
 # Eingaber der Maschinennummer
 # Die Zwischenablage wird uebernommen
-# Suchen der NCSerienIBN der MAschinennummer
+# Suchen der NCSerienIBN der Maschine
 # Pruefen ob 17400 (SW Version) enthalten und Ausgabe der Daten 
 # Bei mehreren NCSerienIBN, werden alle ausgegeben 
 
