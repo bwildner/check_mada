@@ -160,14 +160,14 @@ class MyWindowClass(QMainWindow, form_class):
             QMessageBox.warning(self, "Ergebnis","Keine Dateien mit diesen Daten gefunden", QMessageBox.Cancel, QMessageBox.NoButton, QMessageBox.NoButton)
         else:
             if search17400==True:
-                ausgabefenster.setGeometry(100,100,laengedateiname1*6+100,anzahl17400*130+20)
+                ausgabefenster.setGeometry(50,50,laengedateiname1*6+100,anzahl17400*130+20)
                 ausgabefenster.show()
                 
             if searchMada==True:
                 if filezeiger==0:
                     QMessageBox.warning(self, "Ergebnis","Keine Dateien mit Madatum "+self.mada1.text()+ " gefunden", QMessageBox.Cancel, QMessageBox.NoButton, QMessageBox.NoButton)    
                 else:
-                    ausgabefenster2.setGeometry(100,100,laengedateiname2*6+100,anzahlmada*100)
+                    ausgabefenster2.setGeometry(500,50,laengedateiname2*6+100,anzahlmada*100)
                     ausgabefenster2.show()
         
             
