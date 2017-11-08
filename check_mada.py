@@ -94,8 +94,9 @@ class MyWindowClass(QMainWindow, form_class):
 
         #Pfad zusammenbauen 
         #ordner = "e:\\M"
-        ordner="//N0204/Dateien/" #zuhause
+        #ordner="//N0204/Dateien/" #zuhause
         #bei heller ordner="//heller.biz/hnt/ControlArch-MNo/"
+        ordner="//heller.biz/hnt/ControlArch-MNo/"
         
         verzeichnis = ordner+"M"+eingabe[0:2]+"xxx/ARCHIVE-M"+eingabe
         logging.debug(str( verzeichnis))
@@ -118,11 +119,14 @@ class MyWindowClass(QMainWindow, form_class):
                 inhalt1 = myfile.read(1000)
                 logging.info(str(i)+str(myfile.name) + " Datei einlesen zur Headerkontrolle"+ str((clock()-t2)))
                 if inhalt1.find(";NCKComp",1,1000)>0: #Nckcomp vorhanden dann komplett einlesen und 17400 suchen
+                    logging.info("NCKComp vorhanden, weiter auswerten")
                     t3=clock()
                     inhalt = myfile.read()
                     logging.info( str(i)+ " Nur Datei komplett einlesen ohne durchsuchen: " +str((clock()-t3)))
                     if search17400 == True:
+                        
                         startpos = inhalt.find ('17400') #Position von 17400 im File ermitteln
+                        logging.info("search17400 Schleife: "+str(startpos))
                         if startpos > 0:
                             endpos = inhalt.find('17500', startpos) #Position von 17500 im File ermitteln
                             #Text zwischen 17400 und 17500 im Ausgabefenster anzeigen
@@ -134,13 +138,15 @@ class MyWindowClass(QMainWindow, form_class):
                             ausgabefenster.edit.append(inhalt[startpos-1:endpos-1])
                             
                             anzahl17400=anzahl17400+1 
-                            logging.info(str(i)+" Datei komplett einlesen und durchsuchen: " +str((clock()-t3))+" und bisherige Gesamtzeit: "+str( (clock()-t1)))
+                            logging.info(str(i)+" Datei nach 17400 durchsuchen: " +str((clock()-t3))+" und bisherige Gesamtzeit: "+str( (clock()-t1)))
                     if searchMada == True:
+                        logging.info("searchMada Schleife")
                         ausgabefenster2.edit.append("\n\nDateiname:\n "+ result[i] + "\n Datum: "+ ctime(os.path.getmtime(result[i])))
                             
                         filezeiger=0
                         while inhalt.find (self.mada1.text(), filezeiger)>0:
                             startpos = inhalt.find (self.mada1.text(), filezeiger) #Position von mada1 im File ermitteln
+                            logging.info("Mada gefunden an: "+str(startpos))
                             if startpos > 0:
                                 endpos = inhalt.find('\n', startpos) #Zeilenende ermitteln
                                 #Text zwischen 17400 und 17500 im Ausgabefenster anzeigen
@@ -151,7 +157,7 @@ class MyWindowClass(QMainWindow, form_class):
                             
                                 anzahlmada=anzahlmada+1 
                                 filezeiger=endpos
-                                logging.info(str( i)+ " Datei komplett einlesen und durchsuchen: " +str((clock()-t3))+" und bisherige Gesamtzeit: "+str((clock()-t1)))
+                                logging.info(str( i)+ " Datei nach Mada durchsuchen: " +str((clock()-t3))+" und bisherige Gesamtzeit: "+str((clock()-t1)))
                     
             i=i+1
             myfile.close() #Dateien schliessen
