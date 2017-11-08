@@ -189,7 +189,9 @@ class MyWindowClass(QMainWindow, form_class):
 app = QApplication(sys.argv)
 myWindow = MyWindowClass(None)
 ausgabefenster = AusgabefensterClass()
+ausgabefenster.setWindowTitle("Ergebnisse 17400")
 ausgabefenster2 = AusgabefensterClass()
+ausgabefenster2.setWindowTitle("Ergebnisse Maschinendaten")
 
 #zwischenablage auslesen, pruefen und in das Textfeld kopieren
 zwischenablage = str(QApplication.clipboard().text())
