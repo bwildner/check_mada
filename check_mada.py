@@ -98,6 +98,7 @@ class MyWindowClass(QMainWindow, form_class):
         #bei heller ordner="//heller.biz/hnt/ControlArch-MNo/"
         ordner="//heller.biz/hnt/ControlArch-MNo/"
         
+        
         verzeichnis = ordner+"M"+eingabe[0:2]+"xxx/ARCHIVE-M"+eingabe
         logging.debug(str( verzeichnis))
         t1= clock()        
@@ -118,14 +119,15 @@ class MyWindowClass(QMainWindow, form_class):
                 #Kontrolle ob ;nckcomp in den ersten 1000byte steht
                 inhalt1 = myfile.read(1000)
                 logging.info(str(i)+str(myfile.name) + " Datei einlesen zur Headerkontrolle"+ str((clock()-t2)))
-                if inhalt1.find(";NCKComp",1,1000)>0: #Nckcomp vorhanden dann komplett einlesen und 17400 suchen
+                if (inhalt1.find(";NCKComp",1,1000) or inhalt1.find("CFG_GLOBAL.INI",1,1000))>0: #Nckcomp vorhanden dann komplett einlesen und 17400 suchen
                     logging.info("NCKComp vorhanden, weiter auswerten")
                     t3=clock()
                     inhalt = myfile.read()
-                    logging.info( str(i)+ " Nur Datei komplett einlesen ohne durchsuchen: " +str((clock()-t3)))
+                    #logging.info( str(i)+ " Nur Datei komplett einlesen ohne durchsuchen: " +str((clock()-t3)))
                     if search17400 == True:
                         
                         startpos = inhalt.find ('17400') #Position von 17400 im File ermitteln
+                        
                         logging.info("search17400 Schleife: "+str(startpos))
                         if startpos > 0:
                             endpos = inhalt.find('17500', startpos) #Position von 17500 im File ermitteln
@@ -139,6 +141,11 @@ class MyWindowClass(QMainWindow, form_class):
                             
                             anzahl17400=anzahl17400+1 
                             logging.info(str(i)+" Datei nach 17400 durchsuchen: " +str((clock()-t3))+" und bisherige Gesamtzeit: "+str( (clock()-t1)))
+                        else:
+                            ausgabefenster.edit.append("Dateiname:\n "+ result[i] + "\n Datum: "+ ctime(os.path.getmtime(result[i])))
+                            ausgabefenster.edit.append("FEHLER DATEI kann nicht durchsucht werden!!!!!!\n\n")
+                            
+                             
                     if searchMada == True:
                         logging.info("searchMada Schleife")
                         ausgabefenster2.edit.append("\n\nDateiname:\n "+ result[i] + "\n Datum: "+ ctime(os.path.getmtime(result[i])))
