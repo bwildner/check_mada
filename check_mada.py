@@ -17,6 +17,8 @@ from PyQt4.QtGui import QWidget, QMainWindow, QVBoxLayout, QTextEdit, QMessageBo
 from test.test_pep277 import filenames
 from time import clock, ctime
 import logging
+import codecs
+import locale
 
 
 
@@ -100,6 +102,7 @@ class MyWindowClass(QMainWindow, form_class):
         
         
         verzeichnis = ordner+"M"+eingabe[0:2]+"xxx/ARCHIVE-M"+eingabe
+        #verzeichnis ="d:\\M"+eingabe
         logging.debug(str( verzeichnis))
         t1= clock()        
         result = list(searchfiles(verzeichnis, '.arc')) #Alle .arc Dateien im betreffenden Verz suchen
@@ -118,7 +121,9 @@ class MyWindowClass(QMainWindow, form_class):
                 t2=clock()
                 #Kontrolle ob ;nckcomp in den ersten 1000byte steht
                 inhalt1 = myfile.read(1000)
-                logging.info(str(i)+str(myfile.name) + " Datei einlesen zur Headerkontrolle"+ str((clock()-t2)))
+                logging.info(str(i)+str(myfile.name) + " Datei einlesen zur Headerkontrolle")
+                #logging.info(str(i)+str(myfile.name) + " Datei einlesen zur Headerkontrolle"+ str((clock()-t2)))
+                
                 if (inhalt1.find(";NCKComp",1,1000) or inhalt1.find("CFG_GLOBAL.INI",1,1000))>0: #Nckcomp vorhanden dann komplett einlesen und 17400 suchen
                     logging.info("NCKComp vorhanden, weiter auswerten")
                     t3=clock()
@@ -126,21 +131,30 @@ class MyWindowClass(QMainWindow, form_class):
                     #logging.info( str(i)+ " Nur Datei komplett einlesen ohne durchsuchen: " +str((clock()-t3)))
                     if search17400 == True:
                         
-                        startpos = inhalt.find ('17400') #Position von 17400 im File ermitteln
+                        FileEncoding = "ISO-8859-15"
+                        IN_File = codecs.open(result[i], 'r', FileEncoding).read()
+                        startpos = IN_File.find ('17400') #Position von 17400 im File ermitteln
                         
-                        logging.info("search17400 Schleife: "+str(startpos))
+                        #startpos = inhalt.find ('17400') #Position von 17400 im File ermitteln
+                        
+                        logging.info("Position 17400: "+str(startpos))
+                        
                         if startpos > 0:
-                            endpos = inhalt.find('17500', startpos) #Position von 17500 im File ermitteln
+                            endpos = IN_File.find('17500', startpos) #Position von 17500 im File ermitteln
+                            #endpos = inhalt.find('17500', startpos) #Position von 17500 im File ermitteln
+                            
                             #Text zwischen 17400 und 17500 im Ausgabefenster anzeigen
                             ausgabefenster.edit.append("Dateiname:\n "+ result[i] + "\n Datum: "+ ctime(os.path.getmtime(result[i])))
                             
                             if len(result[i])>laengedateiname1:
                                 laengedateiname1= len(result[i])
                                                   
-                            ausgabefenster.edit.append(inhalt[startpos-1:endpos-1])
+                            #ausgabefenster.edit.append(inhalt[startpos-1:endpos-1])
+                            ausgabefenster.edit.append(IN_File[startpos-1:endpos-1])
+                            
                             
                             anzahl17400=anzahl17400+1 
-                            logging.info(str(i)+" Datei nach 17400 durchsuchen: " +str((clock()-t3))+" und bisherige Gesamtzeit: "+str( (clock()-t1)))
+                            #logging.info(str(i)+" Datei nach 17400 durchsuchen: " +str((clock()-t3))+" und bisherige Gesamtzeit: "+str( (clock()-t1)))
                         else:
                             ausgabefenster.edit.append("Dateiname:\n "+ result[i] + "\n Datum: "+ ctime(os.path.getmtime(result[i])))
                             ausgabefenster.edit.append("FEHLER DATEI kann nicht durchsucht werden!!!!!!\n\n")
