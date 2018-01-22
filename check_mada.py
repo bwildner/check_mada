@@ -215,7 +215,11 @@ ausgabefenster2 = AusgabefensterClass()
 ausgabefenster2.setWindowTitle("Ergebnisse Maschinendaten")
 
 #zwischenablage auslesen, pruefen und in das Textfeld kopieren
-zwischenablage = str(QApplication.clipboard().text())
+#zwischenablage = str(QApplication.clipboard().text())
+zwischenablage1 = unicode(QApplication.clipboard().text())
+zwischenablage2= zwischenablage1.encode('utf8', 'replace')
+zwischenablage = str(zwischenablage2)
+
 if len(zwischenablage) >5:
     QApplication.clipboard().setText("")
 myWindow.mnummer_textfeld.setText(QApplication.clipboard().text())
