@@ -124,7 +124,7 @@ class MyWindowClass(QMainWindow, form_class):
                 logging.info(str(i)+str(myfile.name) + " Datei einlesen zur Headerkontrolle")
                 #logging.info(str(i)+str(myfile.name) + " Datei einlesen zur Headerkontrolle"+ str((clock()-t2)))
                 
-                if (inhalt1.find(";NCKComp",1,1000) or inhalt1.find("CFG_GLOBAL.INI",1,1000))>0: #Nckcomp vorhanden dann komplett einlesen und 17400 suchen
+                if (inhalt1.find(";NCK",1,1000) or inhalt1.find("CFG_GLOBAL.INI",1,1000))>0: #Nckcomp vorhanden dann komplett einlesen und 17400 suchen
                     logging.info("NCKComp vorhanden, weiter auswerten")
                     t3=clock()
                     inhalt = myfile.read()
