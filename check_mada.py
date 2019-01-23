@@ -105,7 +105,9 @@ class MyWindowClass(QMainWindow, form_class):
         #verzeichnis ="d:\\M"+eingabe
         logging.debug(str( verzeichnis))
         t1= clock()        
-        result = list(searchfiles(verzeichnis, '.arc')) #Alle .arc Dateien im betreffenden Verz suchen
+        result1 = list(searchfiles(verzeichnis, '.arc')) #Alle .arc Dateien im betreffenden Verz suchen
+        result2 = list(searchfiles(verzeichnis, '.ARC')) #Alle .arc Dateien im betreffenden Verz suchen
+        result= result1+result2
         logging.info("Dateien suchen: " +str( (clock()-t1)))
         laengedateiname1=0
         laengedateiname2=0
